@@ -31,7 +31,7 @@ days_ahead = (2 - current_date.weekday()) % 7
 wednesday_date = current_date + timedelta(days=days_ahead)
 
 #target_value = 'Rapports des régions du 27 Septembre 2023'
-target_date = pd.to_datetime('2023-09-27')
+target_date = pd.to_datetime('2023-10-04')
 
 # Initialize variables to store the row and column indices of the target cell
 target_row_index = -1
@@ -44,10 +44,12 @@ for row_index, row in df.iterrows():
         if pd.isna(value):
             continue
         elif isinstance(value, str) :
-            formatted_month = target_date.strftime('%B').capitalize()
+            value_lower = value.lower() #convert the cell value to lower case 
+            formatted_month = target_date.strftime('%B').lower() #convert the target date to lower case
             target_date_formatted = target_date.strftime('%d ') + formatted_month + target_date.strftime(' %Y')
             
-            if target_date_formatted in value:
+            #compare the cell value and the target date
+            if target_date_formatted in value_lower:
                 target_row_index = row_index
                 target_column_index = column_index
             break
@@ -209,8 +211,8 @@ else:
     # Create a list of column names from the extracted_data DataFrame starting from the specified row
     column_names2 = extracted_data2.columns.tolist()
 
-    # Convert all elements to string
-    column_names2_without_nan = [str(name) for name in column_names2]
+    # Convert all elements to string and replace "nan" with "nothing"
+    column_names2_without_nan = [str(name) if str(name) != "nan" else "nothing" for name in column_names2]
 
     # Create a list of dictionaries for each column in the table
     columns_data2 = [{'header': name} for name in column_names2_without_nan]
@@ -252,8 +254,8 @@ else:
      # Create a list of column names from the extracted_data DataFrame starting from the specified row
     column_names3 = extracted_data3.columns.tolist()
 
-    # Convert all elements to string
-    column_names3_without_nan = [str(name) for name in column_names3]
+    # Convert all elements to string and replace "nan" with "nothing"
+    column_names3_without_nan = [str(name) if str(name) != "nan" else "nothing" for name in column_names3]
 
     
     # Create a list of dictionaries for each column in the table
